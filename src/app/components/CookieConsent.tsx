@@ -1,3 +1,4 @@
+import { loadGA } from "@/lib/analytics";
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { AnimatePresence, motion } from "motion/react";
@@ -20,22 +21,34 @@ export function CookieConsent() {
     analytics: false,
   });
 
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      setState("accepted"); // any stored value = user already chose
-    }
-  }, []);
-
-  function save(consent: Preferences) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
+useEffect(() => {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
     setState("accepted");
 
-    // Dispatch custom event so analytics can listen
-    window.dispatchEvent(
-      new CustomEvent("neoconic-consent", { detail: consent })
-    );
+    try {
+      const parsed = JSON.parse(stored) as Preferences;
+      if (parsed.analytics) {
+        loadGA();
+      }
+    } catch {
+      // ignore bad stored data
+    }
   }
+}, []);
+
+function save(consent: Preferences) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
+  setState("accepted");
+
+  if (consent.analytics) {
+    loadGA();
+  }
+
+  window.dispatchEvent(
+    new CustomEvent("neoconic-consent", { detail: consent })
+  );
+}
 
   function acceptAll() {
     save({ essential: true, analytics: true });
