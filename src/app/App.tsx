@@ -1,12 +1,39 @@
+import { useEffect } from "react";
 import { RouterProvider } from "react-router";
 import { router } from "./routes";
-import AnalyticsBoot from "./AnalyticsBoot";
+import { loadGA, trackPageView } from "@/lib/analytics";
+
+const STORAGE_KEY = "neoconic-cookie-consent";
 
 export default function App() {
-  return (
-    <>
-      <RouterProvider router={router} />
-      <AnalyticsBoot />
-    </>
-  );
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed.analytics) {
+          loadGA();
+          trackPageView(
+            router.state.location.pathname + router.state.location.search
+          );
+        }
+      } catch {}
+    }
+
+    const unsubscribe = router.subscribe((state) => {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) return;
+
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed.analytics) {
+          trackPageView(state.location.pathname + state.location.search);
+        }
+      } catch {}
+    });
+
+    return unsubscribe;
+  }, []);
+
+  return <RouterProvider router={router} />;
 }
