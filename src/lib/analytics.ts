@@ -1,7 +1,5 @@
-let gaLoaded = false;
-
 export function loadGA() {
-  if (gaLoaded) return;
+  if (window.gtag) return;
 
   const GA_ID = import.meta.env.VITE_GA_ID;
   if (!GA_ID) return;
@@ -15,22 +13,27 @@ export function loadGA() {
   function gtag(...args: any[]) {
     window.dataLayer.push(args);
   }
+
   window.gtag = gtag;
 
   gtag("js", new Date());
+
   gtag("config", GA_ID, {
     anonymize_ip: true,
+    send_page_view: true,
+    debug_mode: true,
   });
-
-  gaLoaded = true;
 }
 
 export function trackPageView(path: string) {
   const GA_ID = import.meta.env.VITE_GA_ID;
   if (!window.gtag || !GA_ID) return;
 
-  window.gtag("config", GA_ID, {
+  window.gtag("event", "page_view", {
     page_path: path,
+    page_location: window.location.href,
+    page_title: document.title,
+    debug_mode: true,
   });
 }
 
