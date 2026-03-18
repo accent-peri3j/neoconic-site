@@ -12,18 +12,31 @@ export default function App() {
       try {
         const parsed = JSON.parse(stored);
         if (parsed.analytics) {
-          loadGA();
-          trackPageView(
-            router.state.location.pathname + router.state.location.search
-          );
+          loadGA(() => {
+            trackPageView(
+              router.state.location.pathname + router.state.location.search
+            );
+          });
         }
       } catch {}
     }
 
+    const handleConsent = (e: Event) => {
+      const consent = (e as CustomEvent).detail;
+      if (consent.analytics) {
+        loadGA(() => {
+          trackPageView(
+            router.state.location.pathname + router.state.location.search
+          );
+        });
+      }
+    };
+
+    window.addEventListener("neoconic-consent", handleConsent);
+
     const unsubscribe = router.subscribe((state) => {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) return;
-
       try {
         const parsed = JSON.parse(stored);
         if (parsed.analytics) {
@@ -32,7 +45,10 @@ export default function App() {
       } catch {}
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+      window.removeEventListener("neoconic-consent", handleConsent);
+    };
   }, []);
 
   return <RouterProvider router={router} />;

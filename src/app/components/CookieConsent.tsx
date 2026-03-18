@@ -1,4 +1,3 @@
-import { loadGA } from "@/lib/analytics";
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { AnimatePresence, motion } from "motion/react";
@@ -9,7 +8,7 @@ const STORAGE_KEY = "neoconic-cookie-consent";
 type ConsentState = "pending" | "accepted" | "rejected" | "custom";
 
 interface Preferences {
-  essential: boolean; // always true
+  essential: boolean;
   analytics: boolean;
 }
 
@@ -21,34 +20,20 @@ export function CookieConsent() {
     analytics: false,
   });
 
-useEffect(() => {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) {
-    setState("accepted");
-
-    try {
-      const parsed = JSON.parse(stored) as Preferences;
-      if (parsed.analytics) {
-        loadGA();
-      }
-    } catch {
-      // ignore bad stored data
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      setState("accepted");
     }
+  }, []);
+
+  function save(consent: Preferences) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
+    setState("accepted");
+    window.dispatchEvent(
+      new CustomEvent("neoconic-consent", { detail: consent })
+    );
   }
-}, []);
-
-function save(consent: Preferences) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
-  setState("accepted");
-
-  if (consent.analytics) {
-    loadGA();
-  }
-
-  window.dispatchEvent(
-    new CustomEvent("neoconic-consent", { detail: consent })
-  );
-}
 
   function acceptAll() {
     save({ essential: true, analytics: true });
@@ -81,7 +66,6 @@ function save(consent: Preferences) {
             boxShadow: "0 8px 40px rgba(0,0,0,0.5)",
           }}
         >
-          {/* Main banner */}
           {!showCustom && (
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
@@ -102,7 +86,8 @@ function save(consent: Preferences) {
                   }}
                 >
                   This site uses essential cookies for functionality and
-                  optional analytics cookies to understand how you use our site.{" "}
+                  optional analytics cookies to understand how you use our
+                  site.{" "}
                   <Link
                     to="/privacy-policy"
                     className="underline transition-colors duration-300"
@@ -147,11 +132,13 @@ function save(consent: Preferences) {
                     fontSize: "13px",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
+                    e.currentTarget.style.borderColor =
+                      "rgba(255,255,255,0.2)";
                     e.currentTarget.style.color = "rgba(255,255,255,0.7)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+                    e.currentTarget.style.borderColor =
+                      "rgba(255,255,255,0.1)";
                     e.currentTarget.style.color = "rgba(255,255,255,0.75)";
                   }}
                 >
@@ -179,7 +166,6 @@ function save(consent: Preferences) {
             </div>
           )}
 
-          {/* Custom preferences */}
           {showCustom && (
             <div className="flex flex-col gap-5">
               <p
@@ -191,7 +177,6 @@ function save(consent: Preferences) {
                 Cookie preferences
               </p>
 
-              {/* Essential */}
               <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-0.5">
                   <span
@@ -222,7 +207,6 @@ function save(consent: Preferences) {
                 </div>
               </div>
 
-              {/* Analytics toggle */}
               <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-0.5">
                   <span
