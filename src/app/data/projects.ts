@@ -59,7 +59,7 @@ export const PROJECTS: Project[] = [
     description:
       "Product design and UX for a European mobile payment platform.",
     longDescription:
-      "Led interface design and user experience across multiple product surfaces, focusing on clarity, scalability, and real-world usability. Also developed sales presentations and keynote materials to support product communication and stakeholder engagement.",
+      "Interface design and user experience across multiple product surfaces, focusing on clarity, scalability, and real-world usability. Also developed sales presentations and keynote materials to support product communication and stakeholder engagement.",
     role: "Product design and UI/UX",
     scope: [
       "Product Design",
