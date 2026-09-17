@@ -1,0 +1,7 @@
+{
+  "src": "^/$",
+  "methods": ["GET", "HEAD"],
+  "middlewareRawSrc": ["/"],
+  "middlewarePath": "_region",
+  "continue": true
+}

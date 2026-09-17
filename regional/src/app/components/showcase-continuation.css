@@ -1,0 +1,166 @@
+.cw-showcase-with-continue {
+  --cw-project-bottom: 80px;
+  --cw-rail-inset: 12px;
+  position: relative;
+  height: calc(var(--cw-project-count) * 100vh);
+  height: calc(var(--cw-project-count) * 100dvh);
+}
+
+.cw-showcase-viewport {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Anchors describe the five existing scroll slots, without adding visual panels. */
+.cw-project-anchor {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.cw-project-rail-position {
+  position: absolute;
+  z-index: 30;
+  right: var(--cw-rail-inset);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.cw-project-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 44px;
+}
+
+.cw-project-counter {
+  width: 44px;
+  margin: 0;
+  text-align: center;
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, .5);
+}
+
+.cw-project-counter-current {
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, .88);
+}
+
+.cw-project-counter-total { margin-top: 10px; }
+
+/* Separate layout boxes keep neighbouring marker hit areas from overlapping. */
+.cw-project-marker {
+  width: 44px;
+  height: 36px;
+  flex: 0 0 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cw-project-marker:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, .9);
+  outline-offset: -2px;
+}
+
+.cw-showcase-continue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  margin-top: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cw-showcase-continue[aria-disabled="true"] { cursor: default; }
+
+/* Reserve a real gutter for the rail, including its complete touch targets. */
+.cw-showcase-with-continue .cw-showcase-project-content {
+  padding-right: calc(var(--cw-rail-inset) + 44px + 20px);
+  padding-bottom: var(--cw-project-bottom);
+}
+
+.cw-showcase-with-continue .cw-showcase-view-project {
+  min-height: 44px;
+  width: max-content;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .cw-showcase-video-control {
+    align-items: flex-start;
+    padding-top: clamp(104px, 20dvh, 176px);
+  }
+}
+
+@media (min-width: 768px) {
+  .cw-showcase-with-continue {
+    --cw-project-bottom: 96px;
+    --cw-rail-inset: 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cw-showcase-with-continue {
+    --cw-project-bottom: 112px;
+    --cw-rail-inset: 36px;
+  }
+}
+
+@media (max-width: 380px) {
+  .cw-showcase-with-continue .cw-showcase-project-content {
+    padding-left: 28px;
+  }
+}
+
+@media (max-height: 600px) {
+  .cw-showcase-with-continue { --cw-project-bottom: 28px; }
+}
+
+@media (max-height: 480px) {
+  .cw-showcase-with-continue .cw-showcase-project-logo,
+  .cw-showcase-with-continue .cw-showcase-project-accent { margin-bottom: 12px; }
+
+  .cw-showcase-with-continue .cw-showcase-project-title { margin-bottom: 8px; }
+  .cw-showcase-with-continue .cw-showcase-project-location { margin-top: 8px; }
+  .cw-showcase-with-continue .cw-showcase-view-project { margin-top: 12px; }
+
+  .cw-project-rail-position {
+    top: 76px;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    transform: none;
+  }
+
+  .cw-project-marker {
+    height: 24px;
+    flex-basis: 24px;
+  }
+
+  .cw-project-marker > span { max-height: 24px; }
+
+  .cw-showcase-video-control {
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-top: 96px;
+    padding-right: calc(var(--cw-rail-inset) + 44px + 24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cw-project-rail * { transition: none !important; }
+}

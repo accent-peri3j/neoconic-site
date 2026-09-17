@@ -1,0 +1,84 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Global Neoconic overrides */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0B0B0B;
+  font-family: 'Satoshi', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(235, 26, 34, 0.2);
+  color: #fff;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0B0B;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Accessibility — Focus Visible ── */
+
+:focus-visible {
+  outline: 2px solid #EB1A22;
+  outline-offset: 3px;
+}
+
+/* Remove default focus ring for mouse users, keep for keyboard */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Links and buttons — subtle focus ring that matches the brand */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid rgba(235, 26, 34, 0.7);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── Premium Animations ── */
+
+@keyframes ambient-drift {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  33% { transform: translate(-48%, -52%) scale(1.04); opacity: 0.85; }
+  66% { transform: translate(-52%, -48%) scale(0.97); opacity: 1; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(235, 26, 34, 0.4); }
+  50% { box-shadow: 0 0 8px 3px rgba(235, 26, 34, 0.15); }
+}
+
+/* ── Nav link underline animation ── */
+.nav-link > span {
+  width: 0;
+}
+
+.nav-link:hover > span {
+  width: 100% !important;
+}

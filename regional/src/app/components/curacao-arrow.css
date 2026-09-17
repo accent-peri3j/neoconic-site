@@ -1,0 +1,27 @@
+.cw-arrow-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  color: inherit;
+}
+
+.cw-arrow-control {
+  color: rgba(255, 255, 255, .55);
+  transition: color .2s ease;
+}
+
+.cw-arrow-control:hover,
+.cw-arrow-control:focus-visible {
+  color: #fff;
+}
+
+.cw-arrow-control:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, .9);
+  outline-offset: 4px;
+  border-radius: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cw-arrow-control { transition: none; }
+}
