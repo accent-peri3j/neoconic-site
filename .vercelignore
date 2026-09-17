@@ -1,0 +1,8 @@
+.git
+node_modules
+regional/node_modules
+.regional-build
+.env*
+**/.env*
+.DS_Store
+**/.DS_Store
